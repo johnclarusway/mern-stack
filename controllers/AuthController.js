@@ -1,13 +1,17 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
 
 exports.authRegister = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  // TODO1: Validate the fields
+  const validationErr = validationResult(req);
+
+  if (validationErr?.errors?.length > 0) {
+    return res.status(400).json({ errors: validationErr.array() });
+  }
 
   const userData = await User.findOne({ email });
-
   if (userData) {
     return res
       .status(400)
@@ -15,7 +19,6 @@ exports.authRegister = async (req, res) => {
   }
 
   const salt = await bcrypt.genSalt(10);
-
   const newPassword = await bcrypt.hash(password, salt);
 
   const user = new User({
@@ -24,7 +27,6 @@ exports.authRegister = async (req, res) => {
     email,
     password: newPassword,
   });
-
   await user.save();
 
   //TODO: Error handling for saving

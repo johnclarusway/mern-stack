@@ -1,4 +1,5 @@
 const express = require("express");
+const { check } = require("express-validator");
 
 const router = express.Router();
 
@@ -10,7 +11,18 @@ const AuthController = require("../controllers/AuthController");
  * @desc    Register endpoint
  * @access  Public
  */
-router.post("/register", AuthController.authRegister);
+router.post(
+  "/register",
+  [
+    check("password", "Please enter a password with 6 and more chars").isLength(
+      {
+        min: 6,
+      }
+    ),
+    check("email", "Please enter a valid email!").isEmail(),
+  ],
+  AuthController.authRegister
+);
 
 /**
  * @route   POST /api/auth/login
