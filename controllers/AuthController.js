@@ -6,12 +6,13 @@ var jwt = require("jsonwebtoken");
 exports.authRegister = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
+  // Field Validation
   const validationErr = validationResult(req);
-
   if (validationErr?.errors?.length > 0) {
     return res.status(400).json({ errors: validationErr.array() });
   }
 
+  // User exist check
   const userData = await User.findOne({ email });
   if (userData) {
     return res
@@ -19,9 +20,11 @@ exports.authRegister = async (req, res) => {
       .json({ errors: [{ message: "User already exists!!" }] });
   }
 
+  // Password hash
   const salt = await bcrypt.genSalt(10);
   const newPassword = await bcrypt.hash(password, salt);
 
+  // Save User
   const user = new User({
     firstName,
     lastName,
@@ -60,7 +63,6 @@ exports.authLogin = async (req, res) => {
   }
 
   // JSON WEB TOKEN - JWT
-
   jwt.sign(
     { userData },
     process.env.JWT_SECRET_KEY,
