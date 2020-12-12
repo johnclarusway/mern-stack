@@ -1,4 +1,5 @@
 const User = require("../models/UserModel");
+const { errorRespond } = require("../middleware/respondHelper");
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 var jwt = require("jsonwebtoken");
@@ -9,15 +10,15 @@ exports.authRegister = async (req, res) => {
   // Field Validation
   const validationErr = validationResult(req);
   if (validationErr?.errors?.length > 0) {
-    return res.status(400).json({ errors: validationErr.array() });
+    return errorRespond(res,430,validationErr?.array)
+    //res.status(400).json({ errors: validationErr.array() });
   }
 
   // User exist check
   const userData = await User.findOne({ email });
   if (userData) {
-    return res
-      .status(400)
-      .json({ errors: [{ message: "User already exists!!" }] });
+    return  errorRespond(res,431,"User already exists!!")
+    // res.status(400).json({ errors: [{ message: "User already exists!!" }] });
   }
 
   // Password hash
@@ -43,23 +44,22 @@ exports.authLogin = async (req, res) => {
   // Field Validation
   const validationErr = validationResult(req);
   if (validationErr?.errors?.length > 0) {
-    return res.status(400).json({ errors: validationErr.array() });
+    return errorRespond(res,431,validationErr.array())
+    //res.status(400).json({ errors: validationErr.array() });
   }
 
   // User exist check
   const userData = await User.findOne({ email });
   if (!userData) {
-    return res
-      .status(400)
-      .json({ errors: [{ message: "User doesn't exists!!" }] });
+    return errorRespond(res,432,"User doesn't exists!!")
+     //res .status(400).json({ errors: [{ message: "User doesn't exists!!" }] });
   }
 
   // Password compare
   const isPasswordMatch = await bcrypt.compare(password, userData.password);
   if (!isPasswordMatch) {
-    return res
-      .status(400)
-      .json({ errors: [{ message: "Invalid credentials" }] });
+    return errorRespond(res,433,"Invalid credentials")
+    //res.status(400).json({ errors: [{ message: "Invalid credentials" }] });
   }
 
   // JSON WEB TOKEN - JWT
@@ -69,7 +69,8 @@ exports.authLogin = async (req, res) => {
     { expiresIn: 3600 },
     (err, token) => {
       if (err) {
-        return res.status(400).json({ errors: [{ message: "Unknown Error" }] });
+        return errorRespond(res,434,err )
+        //res.status(400).json({ errors: [{ message: "Unknown Error" }] });
       }
       res.send(token);
     }
