@@ -41,7 +41,7 @@ const Navbar = () => {
         <Menu.Item key="books">Books</Menu.Item>
 
         <a href="/cart" className="cart-navbar-link">
-          <Badge count={5}>
+          <Badge count={1}>
             <ShoppingCartOutlined className="cart-icon" />
           </Badge>
         </a>

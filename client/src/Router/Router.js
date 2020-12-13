@@ -30,7 +30,7 @@ function AppRouter() {
           <Route exact path="/books:id" component={BookDetail} />
           <Route
             exact
-            path="/books:id"
+            path="/profile"
             component={currentUser ? Dashboard : Signin}
           />
           <Route
