@@ -1,9 +1,9 @@
+import { useContext } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
-import { Layout } from "antd";
 import { postData } from "../helper/PostData";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
-const { Content } = Layout;
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -14,10 +14,12 @@ const tailLayout = {
 
 const Signin = () => {
   let history = useHistory();
+  const { setLoggedIn } = useContext(AuthContext);
 
   const onFinish = (values) => {
     postData("/api/auth/login", values).then((data) => {
-      localStorage.setItem("token", data?.token);
+      localStorage.setItem("token", data.token);
+      setLoggedIn(true);
       history.push("/");
     });
   };

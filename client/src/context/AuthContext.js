@@ -1,10 +1,14 @@
 import { createContext, useState, useEffect } from "react";
 
-export const FirebaseAuthContext = createContext();
+export const AuthContext = createContext();
 
-function AuthContextProvider(props) {
-
-  return <div />;
+function AuthContextProvider({ children }) {
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, setLoggedIn }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export default AuthContextProvider;
