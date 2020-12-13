@@ -23,6 +23,6 @@ router.use("/profile", ProfileRouter);
  * @route /api/book
  * @desc Route for Book
  */
-//router.use("/book", BookRouter);
+router.use("/books", BookRouter);
 
 module.exports = router;
