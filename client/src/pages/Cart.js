@@ -11,7 +11,7 @@ export default function Cart({}) {
   return (
     <div>
       <div class="shopping-cart">
-        <div class="title">Shopping Bag</div>
+        <h1 class="title">Shopping Cart</h1>
 
         <div class="item">
           <div class="buttons">

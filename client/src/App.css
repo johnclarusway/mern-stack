@@ -56,7 +56,7 @@
   position: relative;
   top: 5px;
   margin: 0 20px;
-} 
+}
 .cart-icon {
   font-size: 25px;
   color: rgba(255, 255, 255, 0.65);
@@ -80,8 +80,9 @@
   border-bottom: 1px solid #e1e8ee;
   padding: 20px 30px;
   color: #5e6977;
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .item {
@@ -186,7 +187,7 @@
   font-weight: 300;
 }
 
-button[class*="btn"] {
+.quantity button[class*="btn"] {
   width: 30px;
   height: 30px;
   background-color: #e1e8ee;
