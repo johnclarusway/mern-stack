@@ -1,7 +1,7 @@
 const express = require("express");
 const { check } = require("express-validator");
 const AuthController = require("../controllers/AuthController");
-const validations = require('../middleware/validationMiddleware');
+const validations = require("../middleware/validationMiddleware");
 
 const router = express.Router();
 
@@ -12,13 +12,21 @@ const router = express.Router();
  * @desc    Register endpoint
  * @access  Public
  */
-router.post("/register", validations.registerValidation, AuthController.authRegister);
+router.post(
+  "/register",
+  validations.emailPasswordValidation,
+  AuthController.authRegister
+);
 
 /**
  * @route   POST /api/auth/login
  * @desc    Login endpoint
  * @access  Public
  */
-router.post("/login", validations.loginValidation, AuthController.authLogin);
+router.post(
+  "/login",
+  validations.emailPasswordValidation,
+  AuthController.authLogin
+);
 
-module.exports = router; 
+module.exports = router;
