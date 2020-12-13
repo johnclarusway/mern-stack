@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "start-client": "npm start --prefix client", 
+    "start-client": "npm start --prefix client",
     "develop": "concurrently -n 'server,client' -c 'red,blue' \"npm run server\" \"npm run start-client\"",
     "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
@@ -27,6 +27,7 @@
   "homepage": "https://github.com/johnclarusway/mern-stack#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.8.0",

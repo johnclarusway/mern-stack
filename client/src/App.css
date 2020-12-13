@@ -242,3 +242,16 @@ input:focus {
     margin-right: 20px;
   }
 }
+
+.book-context {
+  height: 750px;
+  overflow: auto;
+}
+.book-list-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.book-list-wrapper > div {
+  margin: 40px;
+}

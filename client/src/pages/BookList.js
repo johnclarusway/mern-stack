@@ -9,10 +9,11 @@ const tagsData = ["Any", "Animals", "Arch", "Nature", "People", "Tech"];
 
 const BookList = () => {
   const [selectedTag, setSelectedTag] = useState(["Any"]);
+  const [bookList, setBookList] = useState([]);
 
   useEffect(() => {
-    fetchData("http://localhost:5000/api/books").then((data) => {
-      console.log("data", data);
+    fetchData("/api/books").then((data) => {
+      setBookList(data?.bookList);
     });
   }, []);
 
@@ -34,12 +35,23 @@ const BookList = () => {
           </CheckableTag>
         ))}
       </div>
-
-      <MediaCard
-        title="Test"
-        description="lorem ipsum doner lit aasf adfas asdf ij iasd i"
-        imgSrc="http://placeimg.com/140/200/animals"
-      />
+      <div className="book-context">
+        <div className="book-list-wrapper">
+          {bookList?.length > 0
+            ? bookList.map((book) => {
+                return (
+                  <MediaCard
+                    title={book?.title}
+                    description={book?.author}
+                    imgSrc={`http://placeimg.com/140/200/${
+                      book?.category || "any"
+                    }`}
+                  />
+                );
+              })
+            : null}
+        </div>
+      </div>
     </div>
   );
 };
