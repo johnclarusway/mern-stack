@@ -8,8 +8,9 @@ const { CheckableTag } = Tag;
 const tagsData = ["Any", "Animals", "Arch", "Nature", "People", "Tech"];
 
 const BookList = () => {
-  const [selectedTag, setSelectedTag] = useState(["Any"]);
+  const [selectedTag, setSelectedTag] = useState("Any");
   const [bookList, setBookList] = useState([]);
+  const [filteredBookList, setFilteredBookList] = useState([]);
 
   useEffect(() => {
     fetchData("/api/books").then((data) => {
@@ -17,13 +18,23 @@ const BookList = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const newList =
+      selectedTag === "Any"
+        ? bookList
+        : bookList.filter((item) => {
+            return item?.category === selectedTag.toLowerCase();
+          });
+    setFilteredBookList(newList);
+  }, [bookList, selectedTag]);
+
   const handleChange = (tag, checked) => {
     const nextSelectedTag = checked ? tag : "Any";
     setSelectedTag(nextSelectedTag);
   };
 
   return (
-    <div>
+    <div className="book-list-wrapper">
       <div className="book-filter">
         {tagsData.map((tag) => (
           <CheckableTag
@@ -35,22 +46,21 @@ const BookList = () => {
           </CheckableTag>
         ))}
       </div>
-      <div className="book-context">
-        <div className="book-list-wrapper">
-          {bookList?.length > 0
-            ? bookList.map((book) => {
-                return (
-                  <MediaCard
-                    title={book?.title}
-                    description={book?.author}
-                    imgSrc={`http://placeimg.com/140/200/${
-                      book?.category || "any"
-                    }`}
-                  />
-                );
-              })
-            : null}
-        </div>
+      <div className="book-list-wrapper">
+        {filteredBookList?.length > 0
+          ? filteredBookList.map((book, index) => {
+              return (
+                <MediaCard
+                  key={index}
+                  title={book?.title}
+                  description={book?.author}
+                  imgSrc={`http://placeimg.com/140/200/${
+                    book?.category || "any"
+                  }`}
+                />
+              );
+            })
+          : null}
       </div>
     </div>
   );
