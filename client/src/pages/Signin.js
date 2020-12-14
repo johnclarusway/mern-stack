@@ -3,6 +3,7 @@ import { Form, Input, Button, Checkbox } from "antd";
 import { postData } from "../helper/PostData";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const layout = {
   labelCol: { span: 8 },
@@ -17,11 +18,15 @@ const Signin = () => {
   const { setLoggedIn } = useContext(AuthContext);
 
   const onFinish = (values) => {
-    postData("/api/auth/login", values).then((data) => {
-      localStorage.setItem("token", data.token);
-      setLoggedIn(true);
-      history.push("/");
-    });
+    postData("/api/auth/login", values)
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        setLoggedIn(true);
+        history.push("/");
+      })
+      .catch((err) => {
+        toast(err?.message || "An error occured");
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -37,10 +42,17 @@ const Signin = () => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
+        <h1 style={{ textAlign: "center" }}>Log In</h1>
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, message: "Please input your email!" }]}
+          rules={[
+            {
+              type: "email",
+              required: true,
+              message: "Please input your email!",
+            },
+          ]}
         >
           <Input />
         </Form.Item>

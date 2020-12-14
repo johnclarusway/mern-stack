@@ -1,13 +1,11 @@
-import { Form, Input, Button, Checkbox } from "antd";
-import { Layout } from "antd";
+import { Form, Input, Button } from "antd";
+import { useHistory } from "react-router-dom";
+import { postData } from "../helper/PostData";
+import { toast } from "react-toastify";
 
-const { Content } = Layout;
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
 };
 
 const validateMessages = {
@@ -18,8 +16,17 @@ const validateMessages = {
 };
 
 const Signup = () => {
+  let history = useHistory();
+
   const onFinish = (values) => {
-    console.log("Success:", values);
+    postData("/api/auth/register", values)
+      .then((data, err) => {
+        toast("Successfully registered");
+        history.push("/");
+      })
+      .catch((err) => {
+        toast(err?.message || "An error occured");
+      });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -35,23 +42,31 @@ const Signup = () => {
         validateMessages={validateMessages}
         onFinishFailed={onFinishFailed}
       >
+        <h1 style={{ textAlign: "center" }}>Register</h1>
         <Form.Item
-          name={["user", "name"]}
-          label="Name"
+          name={"firstName"}
+          label="First Name"
           rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          name={["user", "email"]}
+          name={"lastName"}
+          label="Last Name"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name={"email"}
           label="Email"
-          rules={[{ type: "email" }]}
+          rules={[{ type: "email", required: true }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Password"
-          name={["user", "password"]}
+          name={"password"}
           rules={[{ required: true }]}
         >
           <Input.Password />
